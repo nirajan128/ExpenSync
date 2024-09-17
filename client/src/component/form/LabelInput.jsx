@@ -6,6 +6,7 @@ function LabelInput(props) {
       </label>
       <input
         type={props.type}
+        name={props.name}
         value={props.value}
         onChange={props.onChange}
         className="form-control"

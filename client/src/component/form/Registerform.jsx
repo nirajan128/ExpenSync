@@ -5,18 +5,40 @@ import axios from "axios";
 import AlertStatus from "../section/AlertStatus";
 /* import { useNavigate } from "react-router-dom"; */
 
-function RegisterForm() {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [successMessage, setSuccessMessage] = useState("");
+function RegisterForm(props) {
+  const [inputs, setInputs] = useState({
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+  });
+
+  const { email, password, name, confirmPassword } = inputs;
+  const handleChange = (e) => {
+    setInputs({ ...inputs, [e.target.name]: e.target.value });
+  };
+
   /* const navigate = useNavigate(); */
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    console.log(email, name, password);
+    try {
+      const userCredentials = { email, password, name };
+      const response = await fetch("http://localhost:5000/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userCredentials), //converts the user credentials to json objects
+      });
+
+      const parseResponse = await response.json(); //converts the response to JSON
+      console.log(parseResponse);
+
+      localStorage.setItem("token", parseResponse.token); //sets the localstorage for token
+
+      props.setAuth(true);
+    } catch (error) {
+      console.error("Error registering");
+    }
   };
 
   return (
@@ -27,46 +49,32 @@ function RegisterForm() {
           type="text"
           name="name"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleChange}
           placeholder="Name"
         />
         <LabelInput
           type="email"
           name="email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleChange}
           placeholder="Email"
         />
         <LabelInput
           type="password"
           name="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={handleChange}
           placeholder="Password"
         />
         <LabelInput
           type="password"
           name="confirmpassword"
           value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
+          onChange={handleChange}
           placeholder="Confirm Password"
         />
 
         <button className="btn bgAccent">Register</button>
-        {successMessage && (
-          <AlertStatus
-            message={successMessage}
-            state="alert-success"
-            icon="#check-circle-fill"
-          />
-        )}
-        {errorMessage && (
-          <AlertStatus
-            message={errorMessage}
-            state="alert-danger"
-            icon="#exclamation-triangle-fill"
-          />
-        )}
       </form>
     </div>
   );
