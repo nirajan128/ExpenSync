@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -20,6 +20,33 @@ function App() {
   const setAuth = (boolean) => {
     setIsAuthenticated(boolean);
   };
+
+  //A session
+  //Function isAuthenticated makes a request to is-auth route(JWtroute) in backend and passes the token to check if its still verified by authorization
+  //Useeffect for when the user refreshes the backend check if the token is still valid
+  async function stillAuthenticated() {
+    try {
+      const response = await fetch("http://localhost:5000/auth/is_verify", {
+        method: "GET",
+        headers: { token: localStorage.token },
+      });
+
+      const parsedResponse = await response.json(); //return either tru or false
+      console.log(parsedResponse);
+
+      //if true means authenticaed and user cacn still acess their data, if not they need to log in again
+      parsedResponse === true
+        ? setIsAuthenticated(true)
+        : setIsAuthenticated(false);
+    } catch (error) {
+      console.error("Token expired, please log in again");
+    }
+  }
+
+  useEffect(() => {
+    stillAuthenticated();
+  }, []);
+
   return (
     <Router>
       <div className="container">

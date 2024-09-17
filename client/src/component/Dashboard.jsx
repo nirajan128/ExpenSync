@@ -18,7 +18,7 @@ function Dashboard(props) {
 
   useEffect(() => {
     getName();
-  });
+  }, []);
 
   //logout - removes the token from local storage and sets the authorization to false
   const logOut = (e) => {
