@@ -2,10 +2,12 @@ import db from "../config/db.js";
 import express from "express";
 import bcrypt from "bcrypt";
 import jwtGenerator from "../utils/jwtGenerator.js";
+import validinfo from "../midddleware/validinfo.js"; //valid info middleware to be used while logging in and regstering
+import authorization from "../config/authorization.js";
 
 const router = express.Router();
 
-router.post("/register", async (req, res) => {
+router.post("/register", validinfo, async (req, res) => {
   try {
     //1.Destructure req.body for user data input
     const { name, email, password } = req.body;
@@ -36,7 +38,7 @@ router.post("/register", async (req, res) => {
 });
 
 //Login route
-router.post("/login", async (req, res) => {
+router.post("/login", validinfo, async (req, res) => {
   try {
     //1. Destrcture req.body
     const { email, password } = req.body;
@@ -59,7 +61,18 @@ router.post("/login", async (req, res) => {
     //4. if true, pass the jwt token
     const token = jwtGenerator(user.rows[0].id);
     res.json({ token });
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
+});
+
+//Route to verify if user is authenticated or not, uses authentication.js middleware to check the token, if it matches sends a JSON response as true
+router.get("/is_verify", authorization, async (req, res) => {
+  try {
+    res.json(true);
+  } catch (error) {
+    res.status(500).send("Server error");
+  }
 });
 
 export default router;
