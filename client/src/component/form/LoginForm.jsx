@@ -26,10 +26,15 @@ function LoginForm(props) {
         body: JSON.stringify(userCredentials), //converts the user credentials to json objects
       });
 
-      const parseResponse = await response.json();
-      localStorage.setItem("token", parseResponse.token); //token from backend
+      const parseResponse = await response.json(); //returns a toke
 
-      props.setAuth(true);
+      if (parseResponse.token) {
+        //if token exists
+        localStorage.setItem("token", parseResponse.token); //token from backend
+        props.setAuth(true);
+      } else {
+        props.setAuth(false);
+      }
     } catch (error) {
       console.error("You are not authorized");
     }
