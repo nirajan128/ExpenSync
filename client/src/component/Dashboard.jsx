@@ -1,13 +1,19 @@
 import { useState, useEffect } from "react";
+import dotenv from "dotenv";
+
+dotenv.config();
 function Dashboard(props) {
   const [userName, setName] = useState("");
 
   async function getName() {
     try {
-      const response = await fetch("http://localhost:5000/dashboard", {
-        method: "GET",
-        headers: { token: localStorage.token }, //this token gets paased to authorization.js where it is verified if passed the user data is returned
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/dashboard`,
+        {
+          method: "GET",
+          headers: { token: localStorage.token }, //this token gets paased to authorization.js where it is verified if passed the user data is returned
+        }
+      );
 
       const parseResponse = await response.json();
       setName(parseResponse.name);

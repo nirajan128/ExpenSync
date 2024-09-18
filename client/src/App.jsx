@@ -7,13 +7,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-
+import dotenv from "dotenv";
 //components
 
 import LoginForm from "./component/form/LoginForm";
 import RegisterForm from "./component/form/Registerform";
 import Dashboard from "./component/Dashboard";
 
+dotenv.config();
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -27,10 +28,13 @@ function App() {
   //Useeffect for when the user refreshes the backend check if the token is still valid
   async function stillAuthenticated() {
     try {
-      const response = await fetch("http://localhost:5000/auth/is_verify", {
-        method: "GET",
-        headers: { token: localStorage.token },
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/is_verify`,
+        {
+          method: "GET",
+          headers: { token: localStorage.token },
+        }
+      );
 
       const parsedResponse = await response.json(); //return either tru or false
       console.log(parsedResponse);

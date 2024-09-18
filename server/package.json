@@ -1,9 +1,10 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "type": "module",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -18,5 +19,8 @@
     "express": "^4.21.0",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.12.0"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }

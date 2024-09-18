@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
 import LabelInput from "./LabelInput";
 import { useState } from "react";
-import axios from "axios";
-import AlertStatus from "../section/AlertStatus";
+import dotenv from "dotenv";
 /* import { useNavigate } from "react-router-dom"; */
+
+dotenv.config();
 
 function RegisterForm(props) {
   const [inputs, setInputs] = useState({
@@ -24,11 +25,14 @@ function RegisterForm(props) {
     e.preventDefault();
     try {
       const userCredentials = { email, password, name };
-      const response = await fetch("http://localhost:5000/auth/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(userCredentials), //converts the user credentials to json objects
-      });
+      const response = await fetch(
+        `${process.env.REACT_APP_API_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userCredentials), //converts the user credentials to json objects
+        }
+      );
 
       const parseResponse = await response.json(); //converts the response to JSON
       console.log(parseResponse);
