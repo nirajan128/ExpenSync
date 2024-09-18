@@ -22,15 +22,13 @@ function RegisterForm(props) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      const apiURL = "http://localhost:5000";
       const userCredentials = { email, password, name };
-      const response = await fetch(
-        "https://expensync.onrender.com/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userCredentials), //converts the user credentials to json objects
-        }
-      );
+      const response = await fetch(`${apiURL}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userCredentials), //converts the user credentials to json objects
+      });
 
       const parseResponse = await response.json(); //converts the response to JSON
       console.log(parseResponse);

@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import ExpenseTracker from "./ExpenseTracker";
 
 function Dashboard(props) {
   const [userName, setName] = useState("");
 
   async function getName() {
     try {
-      const response = await fetch("https://expensync.onrender.com/dashboard", {
+      const apiURL = "http://localhost:5000";
+      const response = await fetch(`${apiURL}/dashboard`, {
         method: "GET",
         headers: { token: localStorage.token }, //this token gets paased to authorization.js where it is verified if passed the user data is returned
       });
@@ -30,8 +32,9 @@ function Dashboard(props) {
   return (
     <>
       <h1>Dashboard {userName}</h1>
+      <ExpenseTracker />
       <button className="btn btn-warning" onClick={logOut}>
-        Button
+        logout
       </button>
     </>
   );

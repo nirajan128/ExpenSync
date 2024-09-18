@@ -28,13 +28,11 @@ function App() {
   //Useeffect for when the user refreshes the backend check if the token is still valid
   async function stillAuthenticated() {
     try {
-      const response = await fetch(
-        "https://expensync.onrender.com/auth/is_verify",
-        {
-          method: "GET",
-          headers: { token: localStorage.token },
-        }
-      );
+      const apiURL = "http://localhost:5000";
+      const response = await fetch(`${apiURL}/auth/is_verify`, {
+        method: "GET",
+        headers: { token: localStorage.token },
+      });
 
       const parsedResponse = await response.json(); //return either tru or false
       console.log(parsedResponse);

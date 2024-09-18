@@ -8,7 +8,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://expensyncapp.onrender.com",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );

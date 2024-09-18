@@ -19,15 +19,13 @@ function LoginForm(props) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      const apiURL = "http://localhost:5000";
       const userCredentials = { email, password };
-      const response = await fetch(
-        "https://expensync.onrender.com/auth/login",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(userCredentials), //converts the user credentials to json objects
-        }
-      );
+      const response = await fetch(`${apiURL}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(userCredentials), //converts the user credentials to json objects
+      });
 
       const parseResponse = await response.json(); //returns a toke
 
