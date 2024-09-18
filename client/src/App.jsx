@@ -13,6 +13,7 @@ import {
 import LoginForm from "./component/form/LoginForm";
 import RegisterForm from "./component/form/Registerform";
 import Dashboard from "./component/Dashboard";
+import HomePage from "./component/HomePage";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -55,6 +56,7 @@ function App() {
     <Router>
       <div className="container">
         <Routes>
+          <Route path="/" element={<HomePage />} />
           {/* Route render the dashboard based on isAuthenticated value and passses setAuth as props to be able to set the auth value in each comp  */}
           <Route
             path="/login"
