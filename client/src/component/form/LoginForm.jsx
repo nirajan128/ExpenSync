@@ -1,10 +1,9 @@
 /* eslint-disable no-unused-vars */
 import LabelInput from "./LabelInput";
 import { useState } from "react";
-import dotenv from "dotenv";
+
 import { useNavigate } from "react-router-dom";
 
-dotenv.config();
 function LoginForm(props) {
   const navigate = useNavigate();
   const [inputs, setInputs] = useState({
@@ -22,7 +21,7 @@ function LoginForm(props) {
     try {
       const userCredentials = { email, password };
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/login`,
+        "https://expensync.onrender.com/auth/login",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

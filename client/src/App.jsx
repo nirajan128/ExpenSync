@@ -7,14 +7,13 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import dotenv from "dotenv";
+
 //components
 
 import LoginForm from "./component/form/LoginForm";
 import RegisterForm from "./component/form/Registerform";
 import Dashboard from "./component/Dashboard";
 
-dotenv.config();
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -29,7 +28,7 @@ function App() {
   async function stillAuthenticated() {
     try {
       const response = await fetch(
-        `${process.env.REACT_APP_API_URL}/auth/is_verify`,
+        "https://expensync.onrender.com/auth/is_verify",
         {
           method: "GET",
           headers: { token: localStorage.token },
