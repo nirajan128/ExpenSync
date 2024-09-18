@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import ExpenseTracker from "./ExpenseTracker";
+import MonthlyExpenses from "./MonthlyExpenses";
 
 function Dashboard(props) {
   const [userName, setName] = useState("");
+  const [shouldRefetchMonthly, setShouldRefetchMonthly] = useState(false); //state to update total amount when an expense is added
 
   async function getName() {
     try {
@@ -23,6 +25,10 @@ function Dashboard(props) {
     getName();
   }, []);
 
+  const handleExpenseAdded = () => {
+    setShouldRefetchMonthly(prev => !prev); // Toggle to trigger re-fetch
+  };
+
   //logout - removes the token from local storage and sets the authorization to false
   const logOut = (e) => {
     e.preventDefault();
@@ -32,7 +38,8 @@ function Dashboard(props) {
   return (
     <>
       <h1>Dashboard {userName}</h1>
-      <ExpenseTracker />
+      <ExpenseTracker onExpenseAdded={handleExpenseAdded} />
+      <MonthlyExpenses shouldRefetch={shouldRefetchMonthly}/>
       <button className="btn btn-warning" onClick={logOut}>
         logout
       </button>

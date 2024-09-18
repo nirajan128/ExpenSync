@@ -59,4 +59,28 @@ router.get("/getExpenses", authorization, async (req, res) => {
   }
 });
 
+// Get monthly totals for a specific user
+router.get("/monthly-totals", authorization, async (req, res) => {
+  try {
+    const user = await db.query("SELECT * FROM users WHERE id = $1", [
+      req.user,
+    ]);
+    const user_id = user.rows[0].id; // Get user ID from authenticated request
+    const monthlyTotals = await db.query(
+      `SELECT 
+                DATE_TRUNC('month', date) AS month,
+                SUM(amount) AS total
+             FROM expensesData
+             WHERE user_id = $1
+             GROUP BY DATE_TRUNC('month', date)
+             ORDER BY month DESC`,
+      [user_id]
+    );
+    res.json(monthlyTotals.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 export default router;

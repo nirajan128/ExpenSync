@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 const apiURL = "http://localhost:5000";
-const ExpenseTracker = () => {
+const ExpenseTracker = (props) => {
   const [expenses, setExpenses] = useState([]);
   const [newExpense, setNewExpense] = useState({
     date: "",
@@ -51,6 +51,7 @@ const ExpenseTracker = () => {
 
       setNewExpense({ date: "", expense_type: "", amount: "" });
       fetchExpenses();
+      props.onExpenseAdded(); //updates the total amount evertime posted
     } catch (error) {
       console.error("Error adding expense:", error);
     }
