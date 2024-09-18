@@ -54,43 +54,41 @@ function App() {
 
   return (
     <Router>
-      <div className="container">
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          {/* Route render the dashboard based on isAuthenticated value and passses setAuth as props to be able to set the auth value in each comp  */}
-          <Route
-            path="/login"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
-                <LoginForm setAuth={setAuth} />
-              )
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              isAuthenticated ? (
-                <Navigate to="/dashboard" />
-              ) : (
-                <RegisterForm setAuth={setAuth} />
-              )
-            }
-          />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* Route render the dashboard based on isAuthenticated value and passses setAuth as props to be able to set the auth value in each comp  */}
+        <Route
+          path="/login"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <LoginForm setAuth={setAuth} />
+            )
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            isAuthenticated ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <RegisterForm setAuth={setAuth} />
+            )
+          }
+        />
 
-          <Route
-            path="/dashboard"
-            element={
-              isAuthenticated ? (
-                <Dashboard setAuth={setAuth} />
-              ) : (
-                <Navigate to="/login" />
-              )
-            }
-          />
-        </Routes>
-      </div>
+        <Route
+          path="/dashboard"
+          element={
+            isAuthenticated ? (
+              <Dashboard setAuth={setAuth} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+      </Routes>
     </Router>
   );
 }

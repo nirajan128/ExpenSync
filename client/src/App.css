@@ -15,3 +15,7 @@
 .bgAccent {
   background-color: var(--accent);
 }
+
+.customHeight {
+  height: 100vh;
+}

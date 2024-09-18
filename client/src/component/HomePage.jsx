@@ -13,13 +13,22 @@ function HomePage() {
   };
 
   return (
-    <div>
-      <div className="container-fluid" style={{ height: "100vh" }}>
-        <div className="row h-100 d-flex align-items-center justify-content-center">
-          <button className="btn btn-primary me-2" onClick={handleLoginClick}>
+    <div className="container-fluid customHeight">
+      <div className="row h-100">
+        <div className="col-sm-12 col-md-8 d-flex justify-content-center align-items-center bgPrimary">
+          <h1>ExpenSync</h1>
+        </div>
+        <div className="col-sm-12 col-md-4 d-flex flex-column justify-content-center align-items-center bgBackground">
+          <button
+            className="btn  btn-block w-100 bgAccent"
+            onClick={handleLoginClick}
+          >
             Login
           </button>
-          <button className="btn btn-primary" onClick={handleRegisterClick}>
+          <button
+            className="btn  w-100 bgAccent mt-3"
+            onClick={handleRegisterClick}
+          >
             Register
           </button>
         </div>
