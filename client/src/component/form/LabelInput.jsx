@@ -1,7 +1,7 @@
 function LabelInput(props) {
   return (
-    <>
-      <label htmlFor={props.name} className="form-label">
+    <div className="mt-3">
+      <label htmlFor={props.name} className="form-label fw-bold">
         {props.name}
       </label>
       <input
@@ -11,7 +11,7 @@ function LabelInput(props) {
         onChange={props.onChange}
         className="form-control"
       />
-    </>
+    </div>
   );
 }
 export default LabelInput;

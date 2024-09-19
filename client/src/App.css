@@ -31,6 +31,12 @@
   font-style: normal;
   font-size: 5vw;
 }
+.logoFont2 {
+  font-family: "Abril Fatface", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3vw;
+}
 
 
 .roboto {
@@ -57,6 +63,10 @@
   background-color: var(--bgBackground);
   border: 2px solid var(--bgPrimary);
   color: #000000;
+}
+
+.customPara{
+  font-size: 16px;
 }
 
 .customButton:hover{

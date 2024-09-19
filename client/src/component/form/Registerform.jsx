@@ -1,17 +1,19 @@
 /* eslint-disable no-unused-vars */
 import LabelInput from "./LabelInput";
 import { useState } from "react";
+import AlertStatus from "../section/AlertStatus"
 
 /* import { useNavigate } from "react-router-dom"; */
 
 function RegisterForm(props) {
+  const [errorMessage, setErrorMessage] = useState(null);
   const [inputs, setInputs] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
-
+ 
   const { email, password, name, confirmPassword } = inputs;
   const handleChange = (e) => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
@@ -24,6 +26,11 @@ function RegisterForm(props) {
     try {
       const apiURL = process.env.REACT_APP_API_URL;
       const userCredentials = { email, password, name };
+
+      if (confirmPassword !== password) {
+         setErrorMessage("Password Dont match");
+         return;
+      }
       const response = await fetch(`${apiURL}/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -31,20 +38,25 @@ function RegisterForm(props) {
       });
 
       const parseResponse = await response.json(); //converts the response to JSON
-      console.log(parseResponse);
-
-      localStorage.setItem("token", parseResponse.token); //sets the localstorage for token
-
-      props.setAuth(true);
+      if (response.ok) {
+        localStorage.setItem("token", parseResponse.token);
+        props.setAuth(true);
+        setErrorMessage(null); // Clear error message on successful registration
+      } else {
+        setErrorMessage(parseResponse.error || "Registration failed.");
+      }
     } catch (error) {
       console.error("Error registering");
+      setErrorMessage("An error occurred during registration.");
     }
   };
 
   return (
-    <div>
-      <form onSubmit={handleRegister} className="p-3 border border-dark">
-        {/* Form inputs remain the same */}
+    <div className="customHeight d-flex justify-content-center align-items-center bgBackground">
+      <div className="h-100 d-flex flex-column justify-content-center">
+      <h1 className="logoFont text-white bgPrimary p-2">ExpenSYNC</h1>
+      <form onSubmit={handleRegister} className="p-3 bg-white shadow">
+      <p className="text-center fw-bold">Register</p>
         <LabelInput
           type="text"
           name="name"
@@ -68,14 +80,18 @@ function RegisterForm(props) {
         />
         <LabelInput
           type="password"
-          name="confirmpassword"
+          name="confirmPassword"
           value={confirmPassword}
           onChange={handleChange}
           placeholder="Confirm Password"
         />
 
-        <button className="btn bgAccent">Register</button>
+        <button className="btn bgAccent text-dark mt-3">Register</button>
+         {/* Conditionally render AlertStatus component */}
+         {errorMessage && <AlertStatus message={errorMessage} state="alert-danger" />}
       </form>
+      </div>
+      
     </div>
   );
 }
