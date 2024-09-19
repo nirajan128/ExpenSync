@@ -2,7 +2,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 :root {
   --bgPrimary: #000000;
-  --bgBackground: #f4f1de;
+  --bgBackground:  #D3D3D3;
   --accent: #FFC107;
 }
 
@@ -17,6 +17,9 @@
 
 .bgAccent {
   background-color: var(--accent);
+}
+#root{
+  background-color: var(--bgBackground);
 }
 
 .customHeight {
@@ -53,8 +56,8 @@
 }
 
 .box{
-  height: 8vw;
-  width: 8vw;
+  height: 10vw;
+  width: 10vw;
   background-color: #000000;
   padding: 1vw;
 }

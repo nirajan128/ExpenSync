@@ -10,6 +10,7 @@ function LabelInput(props) {
         value={props.value}
         onChange={props.onChange}
         className="form-control"
+        required
       />
     </div>
   );
