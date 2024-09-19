@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const apiURL = "http://localhost:5000";
+const apiURL = process.env.REACT_APP_API_URL;
 const ExpenseTracker = (props) => {
   const [expenses, setExpenses] = useState([]);
   const [newExpense, setNewExpense] = useState({
@@ -22,7 +22,7 @@ const ExpenseTracker = (props) => {
       const parseResponse = await response.json();
       setExpenses(parseResponse);
     } catch (error) {
-      console.error("Error fetching expenses:", error);
+      console.error("Error fetching expenses:");
     }
   };
 

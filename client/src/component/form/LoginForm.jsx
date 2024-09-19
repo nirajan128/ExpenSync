@@ -19,7 +19,7 @@ function LoginForm(props) {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const apiURL = "http://localhost:5000";
+      const apiURL = process.env.REACT_APP_API_URL;
       const userCredentials = { email, password };
       const response = await fetch(`${apiURL}/auth/login`, {
         method: "POST",

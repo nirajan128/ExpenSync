@@ -8,7 +8,7 @@ function Dashboard(props) {
 
   async function getName() {
     try {
-      const apiURL = "http://localhost:5000";
+      const apiURL = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiURL}/dashboard`, {
         method: "GET",
         headers: { token: localStorage.token }, //this token gets paased to authorization.js where it is verified if passed the user data is returned

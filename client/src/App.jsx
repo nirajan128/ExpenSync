@@ -28,7 +28,7 @@ function App() {
   //Useeffect for when the user refreshes the backend check if the token is still valid
   async function stillAuthenticated() {
     try {
-      const apiURL = "http://localhost:5000";
+      const apiURL = process.env.REACT_APP_API_URL;
       const response = await fetch(`${apiURL}/auth/is_verify`, {
         method: "GET",
         headers: { token: localStorage.token },

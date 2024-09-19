@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const apiURL = "http://localhost:5000";
+const apiURL = process.env.REACT_APP_API_URL;
 
 const MonthlyExpenses = (props) => {
   const [monthlyExpenses, setMonthlyExpenses] = useState([]);

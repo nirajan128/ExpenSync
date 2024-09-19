@@ -22,7 +22,7 @@ function RegisterForm(props) {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const apiURL = "http://localhost:5000";
+      const apiURL = process.env.REACT_APP_API_URL;
       const userCredentials = { email, password, name };
       const response = await fetch(`${apiURL}/auth/register`, {
         method: "POST",
