@@ -10,7 +10,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.REACT_CLIENT_URL,
+    origin: "https://expensyncapp.onrender.com",
     credentials: true,
   })
 );
