@@ -1,9 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 :root {
-  --bgPrimary: #3d405b;
+  --bgPrimary: #000000;
   --bgBackground: #f4f1de;
-  --accent: #e07a5f;
+  --accent: #FFC107;
 }
 
+/* Colors */
 .bgPrimary {
   background-color: var(--bgPrimary);
 }
@@ -19,3 +22,125 @@
 .customHeight {
   height: 100vh;
 }
+
+
+/* Fonts */
+.logoFont {
+  font-family: "Abril Fatface", serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 5vw;
+}
+
+
+.roboto {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.openSans {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.box{
+  height: 8vw;
+  width: 8vw;
+  background-color: #000000;
+  padding: 1vw;
+}
+
+.customButton{
+  background-color: var(--bgBackground);
+  border: 2px solid var(--bgPrimary);
+  color: #000000;
+}
+
+.customButton:hover{
+  background-color: var(--accent);
+  border: none;
+}
+
+/* Font sizes responsive */
+/* Base font sizes for mobile (default) */
+h1 {
+  font-size: 24px;
+}
+
+h2 {
+  font-size: 22px;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+p, a, button {
+  font-size: 16px;
+}
+
+/* Font sizes for tablets and larger screens */
+@media (min-width: 576px) {
+  h1 {
+      font-size: 28px;
+  }
+
+  h2 {
+      font-size: 26px;
+  }
+
+  h3 {
+      font-size: 24px;
+  }
+
+  p, a, button {
+      font-size: 18px;
+  }
+}
+
+/* Font sizes for desktops and larger screens */
+@media (min-width: 768px) {
+  h1 {
+      font-size: 32px;
+  }
+
+  h2 {
+      font-size: 30px;
+  }
+
+  h3 {
+      font-size: 28px;
+  }
+
+  p, a, button {
+      font-size: 20px;
+  }
+}
+
+/* Font sizes for large desktops and larger screens */
+@media (min-width: 992px) {
+  h1 {
+      font-size: 36px;
+  }
+
+  h2 {
+      font-size: 34px;
+  }
+
+  h3 {
+      font-size: 32px;
+  }
+
+  p, a, button {
+      font-size: 22px;
+  }
+}
+
+
+
+
+
+

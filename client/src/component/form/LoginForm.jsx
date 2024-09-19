@@ -59,7 +59,7 @@ function LoginForm(props) {
           onChange={handleChange}
         />
         <button
-          className="btn bgAccent"
+          className="btn bgAccent openSans text-white fw-bold"
           /*  onClick={() => {
             props.setAuth(true);
           }} */
