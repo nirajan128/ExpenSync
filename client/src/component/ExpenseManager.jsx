@@ -20,12 +20,15 @@ const ExpenseManager = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   //Loading state for coategories
   const [categories, setCategories] = useState([]);
+  // State for monthly category totals
+  const [monthlyCategoryTotals, setMonthlyCategoryTotals] = useState([]);
 
   // Effect hook to fetch data on component mount and when shouldRefetch changes
   useEffect(() => {
     fetchExpenses();
     fetchMonthlyExpenses();
     fetchCategories();
+    fetchMonthlyCategoryTotals();
   }, [props.shouldRefetch]);
 
   // Function to fetch individual expenses
@@ -80,6 +83,29 @@ const ExpenseManager = (props) => {
     }
   };
 
+  // function to fetch monthly category totals
+  const fetchMonthlyCategoryTotals = async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(
+        `${apiURL}/dashboard/monthly-totals/categories`,
+        {
+          method: "GET",
+          headers: { token: localStorage.token },
+        }
+      );
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setMonthlyCategoryTotals(data.totalsByCategory);
+    } catch (error) {
+      console.error("Error fetching monthly category totals:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   // Handler for form input changes
   const handleInputChange = (e) => {
     setNewExpense({ ...newExpense, [e.target.name]: e.target.value });
@@ -116,8 +142,37 @@ const ExpenseManager = (props) => {
       setNewExpense({ date: "", expense_type: "", category: "", amount: "" });
       fetchExpenses();
       fetchMonthlyExpenses();
+      fetchMonthlyCategoryTotals();
     } catch (error) {
       console.error("Error adding expense:", error);
+    }
+  };
+  const handleDelete = async (id) => {
+    if (window.confirm("Are you sure you want to delete this expense?")) {
+      try {
+        const response = await fetch(
+          `${apiURL}/dashboard/deleteExpense/${id}`,
+          {
+            method: "DELETE",
+            headers: { token: localStorage.token },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log(data.message); // Display success message
+
+        // Refetch expenses or update the state
+        fetchExpenses();
+        fetchMonthlyExpenses();
+        fetchCategories();
+        fetchMonthlyCategoryTotals();
+      } catch (error) {
+        console.error("Error deleting expense:", error);
+      }
     }
   };
 
@@ -148,9 +203,10 @@ const ExpenseManager = (props) => {
               placeholder="Expense Type"
             />
             <select
-              className="form-select mb-3"
+              className="form-select mb-3 mt-3"
               value={newExpense.category}
               onChange={handleSelectChange}
+              required
             >
               <option value="" disabled>
                 Select expense category
@@ -168,91 +224,114 @@ const ExpenseManager = (props) => {
               onChange={handleInputChange}
               placeholder="Amount"
             />
-            <button type="submit" className="btn bgAccent">
+            <button type="submit" className="btn bgAccent mt-3">
               Add Expense
             </button>
           </form>
         </div>
 
-        {/* Monthly Expenses Summary Section */}
         <div className="col-md-6">
-          <h3>Monthly Expenses</h3>
-
+          <p className="fw-bold roboto text-decoration-underline">
+            Monthly Expenses
+          </p>
           {isLoading ? (
             <div>Loading monthly expenses...</div>
-          ) : monthlyExpenses.length > 0 ? (
-            <div className="row gap-3">
-              <div className="col-3 border border-black text-black openSans d-flex flex-column justify-content-center align-items-center">
-                {monthlyExpenses.map((expense, index) => (
-                  <p key={index} className="p-3">
-                    {formatMonth(expense.month)}: $
-                    {parseFloat(expense.total).toFixed(2)}
-                  </p>
-                ))}
-              </div>
-              <div className="col-3 bg-black text-white openSans d-flex flex-column justify-content-center align-items-center">
-                <p>Groceries</p>
-              </div>
-              <div className="col-3 bg-black text-white openSans d-flex flex-column justify-content-center align-items-center">
-                <p>Rent</p>
-              </div>
-              <div className="col-3 bg-black text-white openSans d-flex flex-column justify-content-center align-items-center">
-                <p className="p-2">Entertainment</p>
-              </div>
-            </div>
           ) : (
-            <p>No monthly expenses data available.</p>
+            <div className="row">
+              {monthlyExpenses.length > 0 ? (
+                monthlyExpenses.map((expense, index) => (
+                  <div key={index} className="col-6 col-md-4 mb-3">
+                    <div className="border border-3 shadow p-3 text-center fw-bold openSans">
+                      {formatMonth(expense.month)}: $
+                      {parseFloat(expense.total).toFixed(2)}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No monthly expenses data available.</p>
+              )}
+            </div>
           )}
-        </div>
 
-        {/* Expense List Table */}
-        <div className="mt-3">
-          {expenses && expenses.length > 0 ? (
-            <div>
-              <div className="mt-3">
-                <div className="btn-group mb-3" role="group">
-                  <button
-                    className="btn btn-secondary"
-                    onClick={() => handleCategoryClick("all")}
-                  >
-                    All
-                  </button>
-                  {categories.map((category, index) => (
-                    <button
-                      key={index}
-                      className="btn btn-secondary"
-                      onClick={() => handleCategoryClick(category)}
-                    >
-                      {category}
-                    </button>
-                  ))}
-                </div>
-              </div>
-              <table className="table table-striped table-responsive">
-                <thead>
-                  <tr className="openSans">
-                    <th>Date</th>
-                    <th>Expense Type</th>
-                    <th>Category</th>
-                    <th>Amount</th>
-                  </tr>
-                </thead>
-                <tbody className="openSans">
-                  {expenses.map((expense) => (
-                    <tr key={expense.id}>
-                      <td>{expense.date}</td>
-                      <td>{expense.expense_type}</td>
-                      <td>{expense.category}</td>
-                      <td>${expense.amount}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <p className="mt-4 fw-bold roboto text-decoration-underline">
+            Monthly Expenses by Category
+          </p>
+          {isLoading ? (
+            <div>Loading category totals...</div>
           ) : (
-            <p>No expenses found.</p>
+            <div className="row">
+              {monthlyCategoryTotals.length > 0 ? (
+                monthlyCategoryTotals.map((total, index) => (
+                  <div key={index} className="col-6 col-md-4 mb-3">
+                    <div className="border  border-3 p-3 fw-bold text-center openSans bold shadow">
+                      {total.category} ${parseFloat(total.total).toFixed(2)}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No monthly category totals available.</p>
+              )}
+            </div>
           )}
         </div>
+      </div>
+
+      <div className="mt-3">
+        <div className="btn-group mb-3" role="group">
+          <button
+            className="btn btn-secondary"
+            onClick={() => handleCategoryClick("all")}
+          >
+            All
+          </button>
+          {categories.map((category, index) => (
+            <button
+              key={index}
+              className="btn btn-secondary"
+              onClick={() => handleCategoryClick(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* Expense List Table */}
+      <div className="mt-3">
+        {expenses && expenses.length > 0 ? (
+          <div>
+            <table className="table table-striped table-responsive">
+              <thead>
+                <tr className="openSans">
+                  <th>Date</th>
+                  <th>Expense Type</th>
+                  <th>Category</th>
+                  <th>Amount</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody className="openSans">
+                {expenses.map((expense) => (
+                  <tr key={expense.id}>
+                    <td>{expense.date}</td>
+                    <td>{expense.expense_type}</td>
+                    <td>{expense.category}</td>
+                    <td>${expense.amount}</td>
+                    <td>
+                      <i
+                        className="fas fa-trash-alt text-danger"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleDelete(expense.id)}
+                        title="Delete Expense"
+                      ></i>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p>No expenses found.</p>
+        )}
       </div>
     </div>
   );

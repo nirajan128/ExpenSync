@@ -28,6 +28,7 @@ router.post("/postExpenses", authorization, async (req, res) => {
     const user = await db.query("SELECT * FROM users WHERE id = $1", [
       req.user,
     ]);
+
     const user_id = user.rows[0].id; // Get user ID from authenticated request
 
     const newExpense = await db.query(
@@ -98,10 +99,61 @@ router.get("/monthly-totals", authorization, async (req, res) => {
   }
 });
 
+// New route to get monthly totals by category
+router.get("/monthly-totals/categories", authorization, async (req, res) => {
+  try {
+    const user = await db.query("SELECT * FROM users WHERE id = $1", [
+      req.user,
+    ]);
+    const user_id = user.rows[0].id;
+
+    const monthlyCategoryTotals = await db.query(
+      `SELECT 
+                DATE_TRUNC('month', date) AS month,
+                category,
+                SUM(amount) AS total
+             FROM expensesData
+             WHERE user_id = $1
+             GROUP BY DATE_TRUNC('month', date), category
+             ORDER BY month DESC, category`,
+      [user_id]
+    );
+
+    res.json({ totalsByCategory: monthlyCategoryTotals.rows });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 // New route to get valid expense categories
 router.get("/getCategories", authorization, (req, res) => {
   const validCategories = ["Groceries", "Entertainment", "Rent", "Other"];
   res.json(validCategories);
+});
+
+// Delete an expense by ID
+router.delete("/deleteExpense/:id", authorization, async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+
+    // Check if the expense belongs to the user
+    const expense = await db.query("SELECT * FROM expensesData WHERE id = $1", [
+      expenseId,
+    ]);
+
+    if (expense.rows.length === 0) {
+      return res.status(404).send("Expense not found");
+    }
+
+    // Delete the expense
+    await db.query("DELETE FROM expensesData WHERE id = $1", [expenseId]);
+
+    res.json({ message: "Expense deleted successfully" });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
 });
 
 export default router;
