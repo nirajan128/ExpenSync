@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv"
+import dotenv from "dotenv";
 import authRoutes from "./routes/jwtAuth.js";
 import dashboard from "./routes/dashboard.js";
 

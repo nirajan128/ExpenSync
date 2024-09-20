@@ -23,7 +23,7 @@ router.get("/", authorization, async (req, res) => {
 //for posting expenses
 router.post("/postExpenses", authorization, async (req, res) => {
   try {
-    const { date, expense_type, amount } = req.body;
+    const { date, expense_type, category, amount } = req.body;
 
     const user = await db.query("SELECT * FROM users WHERE id = $1", [
       req.user,
@@ -31,8 +31,8 @@ router.post("/postExpenses", authorization, async (req, res) => {
     const user_id = user.rows[0].id; // Get user ID from authenticated request
 
     const newExpense = await db.query(
-      "INSERT INTO expensesData (user_id, date, expense_type, amount) VALUES ($1, $2, $3, $4) RETURNING *",
-      [user_id, date, expense_type, amount]
+      "INSERT INTO expensesData (user_id, date, expense_type, category, amount) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [user_id, date, expense_type, category, amount]
     );
     res.json(newExpense.rows[0]);
   } catch (error) {
@@ -48,10 +48,25 @@ router.get("/getExpenses", authorization, async (req, res) => {
       req.user,
     ]);
     const user_id = user.rows[0].id; // Get user ID from authenticated request
-    const expenses = await db.query(
-      "SELECT * FROM expensesData WHERE user_id = $1 ORDER BY date DESC",
-      [user_id]
-    );
+
+    // Get the category from query parameters
+    const { category } = req.query; // Expects category as a query parameter
+
+    let expenses;
+    if (category) {
+      // If a category is provided, filter by that category
+      expenses = await db.query(
+        "SELECT * FROM expensesData WHERE user_id = $1 AND category = $2 ORDER BY date DESC",
+        [user_id, category]
+      );
+    } else {
+      // If no category is provided, return all expenses
+      expenses = await db.query(
+        "SELECT * FROM expensesData WHERE user_id = $1 ORDER BY date DESC",
+        [user_id]
+      );
+    }
+
     res.json(expenses.rows);
   } catch (err) {
     console.error(err.message);
@@ -81,6 +96,12 @@ router.get("/monthly-totals", authorization, async (req, res) => {
     console.error(err.message);
     res.status(500).send("Server error");
   }
+});
+
+// New route to get valid expense categories
+router.get("/getCategories", authorization, (req, res) => {
+  const validCategories = ["Groceries", "Entertainment", "Rent", "Other"];
+  res.json(validCategories);
 });
 
 export default router;
