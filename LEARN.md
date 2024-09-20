@@ -1,4 +1,4 @@
-# ExpenSNC - Expense Management Web App
+# ExpenSYNC - Expense Management Web App
 
 ExpenSNC is a powerful expense management application built using the PERN (PostgreSQL, Express, React, Node.js) stack. It helps users track and manage their monthly expenses efficiently.
 
@@ -46,7 +46,7 @@ ExpenSNC is a powerful expense management application built using the PERN (Post
 
 1. Clone the repository
 
-- git clone https://github.com/yourusername/expensnc.git
+- git clone https://github.com/nirajan128/ExpenSync
 - cd expensnc
 
 2. Install dependencies for both client and server
