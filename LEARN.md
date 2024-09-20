@@ -1,6 +1,6 @@
 # ExpenSYNC - Expense Management Web App
 
-ExpenSNC is a powerful expense management application built using the PERN (PostgreSQL, Express, React, Node.js) stack. It helps users track and manage their monthly expenses efficiently.
+ExpenSYNC is a powerful expense management application built using the PERN (PostgreSQL, Express, React, Node.js) stack. It helps users track and manage their monthly expenses efficiently.
 
 - Live Preview: [https://expensyncapp.onrender.com](https://expensyncapp.onrender.com)
 
