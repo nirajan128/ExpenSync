@@ -156,4 +156,33 @@ router.delete("/deleteExpense/:id", authorization, async (req, res) => {
   }
 });
 
+// Update an expense by ID
+router.put("/updateExpense/:id", authorization, async (req, res) => {
+  try {
+    const expenseId = req.params.id;
+    const { date, expense_type, category, amount } = req.body;
+
+    // Check if the expense belongs to the user
+    const expense = await db.query(
+      "SELECT * FROM expensesData WHERE id = $1 AND user_id = $2",
+      [expenseId, req.user]
+    );
+
+    if (expense.rows.length === 0) {
+      return res.status(404).send("Expense not found or not authorized");
+    }
+
+    // Update the expense
+    const updatedExpense = await db.query(
+      "UPDATE expensesData SET date = $1, expense_type = $2, category = $3, amount = $4 WHERE id = $5 RETURNING *",
+      [date, expense_type, category, amount, expenseId]
+    );
+
+    res.json(updatedExpense.rows[0]);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server error");
+  }
+});
+
 export default router;

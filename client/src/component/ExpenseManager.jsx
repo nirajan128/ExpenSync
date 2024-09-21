@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import LabelInput from "./form/LabelInput";
+import EditExpenseModal from "./section/EditExpenseModal";
 
 // API URL from environment variables
 const apiURL = process.env.REACT_APP_API_URL;
@@ -22,6 +23,9 @@ const ExpenseManager = (props) => {
   const [categories, setCategories] = useState([]);
   // State for monthly category totals
   const [monthlyCategoryTotals, setMonthlyCategoryTotals] = useState([]);
+  //updateing expenses
+  const [editingExpense, setEditingExpense] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   // Effect hook to fetch data on component mount and when shouldRefetch changes
   useEffect(() => {
@@ -106,6 +110,38 @@ const ExpenseManager = (props) => {
     }
   };
 
+  //function to fetch updated expenses
+  const handleUpdateExpense = async (updatedExpense) => {
+    try {
+      const response = await fetch(
+        `${apiURL}/dashboard/updateExpense/${updatedExpense.id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            token: localStorage.token,
+          },
+          body: JSON.stringify(updatedExpense),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Expense updated:", data);
+
+      // Refetch expenses and close modal
+      fetchExpenses();
+      fetchMonthlyExpenses();
+      fetchMonthlyCategoryTotals();
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error updating expense:", error);
+    }
+  };
+
   // Handler for form input changes
   const handleInputChange = (e) => {
     setNewExpense({ ...newExpense, [e.target.name]: e.target.value });
@@ -174,6 +210,16 @@ const ExpenseManager = (props) => {
         console.error("Error deleting expense:", error);
       }
     }
+  };
+
+  const handleEditClick = (expense) => {
+    setEditingExpense(expense);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setEditingExpense(null);
   };
 
   // Helper function to format date for display
@@ -318,6 +364,12 @@ const ExpenseManager = (props) => {
                     <td>${expense.amount}</td>
                     <td>
                       <i
+                        className="fas fa-edit text-primary me-2"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => handleEditClick(expense)}
+                        title="Edit Expense"
+                      ></i>
+                      <i
                         className="fas fa-trash-alt text-danger"
                         style={{ cursor: "pointer" }}
                         onClick={() => handleDelete(expense.id)}
@@ -333,6 +385,14 @@ const ExpenseManager = (props) => {
           <p>No expenses found.</p>
         )}
       </div>
+      {/* Edit Expense Modal */}
+      <EditExpenseModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        expense={editingExpense}
+        onUpdate={handleUpdateExpense}
+        categories={categories}
+      />
     </div>
   );
 };
