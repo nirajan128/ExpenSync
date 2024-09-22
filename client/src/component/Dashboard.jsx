@@ -16,7 +16,7 @@ function Dashboard(props) {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to fetch user data');
+        throw new Error("Failed to fetch user data");
       }
 
       const parseResponse = await response.json();
@@ -45,9 +45,11 @@ function Dashboard(props) {
   return (
     <div className="container">
       <nav className="navbar navbar-light">
-      <h1 className="logoFont2 text-white bgPrimary p-2">ExpenSYNC</h1>
+        <h1 className="logoFont2 text-white bgPrimary p-2">ExpenSYNC</h1>
 
-        <button className="btn customButton" onClick={logOut}>Logout</button>
+        <button className="btn customButton" onClick={logOut}>
+          Logout
+        </button>
       </nav>
       <h3 className=" Roboto">Welcome {userName}</h3>
       <div className="row mt-3">
@@ -55,6 +57,19 @@ function Dashboard(props) {
           <ExpenseManager />
         </div>
       </div>
+      <footer>
+        <p>
+          Developed By:{" "}
+          <span>
+            <a
+              href="https://github.com/nirajan128"
+              className="onpenSans text-center mt-3"
+            >
+              @Nirajan Shrestha 2024
+            </a>
+          </span>
+        </p>
+      </footer>
     </div>
   );
 }
