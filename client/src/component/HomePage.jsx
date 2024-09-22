@@ -43,7 +43,7 @@ function HomePage() {
         </div>
       </div>
       <footer>
-        <p>
+        <p className="openSans text-center customP">
           Developed By:{" "}
           <span>
             <a
