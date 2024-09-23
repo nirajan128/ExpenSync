@@ -42,13 +42,13 @@ function HomePage() {
           </div>
         </div>
       </div>
-      <footer>
+      <footer className="bgBackground">
         <p className="openSans text-center customP">
           Developed By:{" "}
           <span>
             <a
               href="https://github.com/nirajan128"
-              className="onpenSans text-center mt-3"
+              className="onpenSans text-center mt-3 customP"
             >
               @Nirajan Shrestha 2024
             </a>

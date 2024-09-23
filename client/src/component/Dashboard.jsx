@@ -57,13 +57,13 @@ function Dashboard(props) {
           <ExpenseManager />
         </div>
       </div>
-      <footer>
+      <footer className="bgBackground">
         <p className="openSans text=center customP">
           Developed By:{" "}
           <span>
             <a
               href="https://github.com/nirajan128"
-              className="onpenSans text-center mt-3"
+              className="onpenSans text-center mt-3 cutsomP"
             >
               @Nirajan Shrestha 2024
             </a>
