@@ -58,12 +58,12 @@ function Dashboard(props) {
         </div>
       </div>
       <footer className="bgBackground">
-        <p className="openSans text=center customP">
+        <p className="openSans text-center customP">
           Developed By:{" "}
           <span>
             <a
               href="https://github.com/nirajan128"
-              className="onpenSans text-center mt-3 cutsomP"
+              className="onpenSans text-center mt-3 customP"
             >
               @Nirajan Shrestha 2024
             </a>

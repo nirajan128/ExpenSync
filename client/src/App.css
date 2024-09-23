@@ -77,6 +77,9 @@
 
 /* Font sizes responsive */
 /* Base font sizes for mobile (default) */
+.customP {
+  font-size: 12px;
+}
 h1 {
   font-size: 24px;
 }
@@ -155,9 +158,5 @@ button {
   a,
   button {
     font-size: 22px;
-  }
-
-  .customP {
-    font-size: 12px;
   }
 }
