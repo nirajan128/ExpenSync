@@ -86,6 +86,9 @@ ExpenSYNC is a powerful expense management application built using the PERN (Pos
 6. Visit url
 ```
    http://localhost:5000
+   Note: The client runs on port 5000 by default. Make sure your server is running on port 5000 (or the port specified in the .env file).
+
+
 ```
 
 
