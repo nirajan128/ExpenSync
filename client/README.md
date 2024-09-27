@@ -84,7 +84,7 @@ ExpenSYNC is a powerful expense management application built using the PERN (Pos
 ```
 6. Visit url
 ```
-  http://localhost:5000
+   http://localhost:5000
 ```
 
 
