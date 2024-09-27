@@ -45,29 +45,39 @@ ExpenSYNC is a powerful expense management application built using the PERN (Pos
 ### Installation
 
 1. Clone the repository
-
-- git clone hhttps://github.com/nirajan128/ExpenSync
-- cd expensnc
+```
+  git clone hhttps://github.com/nirajan128/ExpenSync
+  cd expensnc
+```
 
 2. Install dependencies for both client and server
 
-- cd client
-- npm install
-- cd ../server
-- npm install
+```
+  cd client
+  npm install
+  cd ../server
+  npm install
+```
 
 3. Set up environment variables
 
 - Create a `.env` file in the server directory and add the following:
-- DATABASE_URL=your_supabase_postgres_url
-- JWT_SECRET=your_jwt_secret
-- PORT=5000
+```
+  DATABASE_URL=your_supabase_postgres_url
+  JWT_SECRET=your_jwt_secret
+  PORT=5000
+```
 
-4. Run the application
+4. Start the server 
+``` node server.js  ```
 
-- for server: node server.js
-- for client: npm start
+5. Start the client
+``` npm start ```
 
+6. Visit local url
+```
+   http://localhost:5000
+```
 ## Usage
 
 1. Register a new account or log in to an existing one.
